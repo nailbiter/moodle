@@ -24,10 +24,13 @@
 
 M.mod_quiz = M.mod_quiz || {};
 
-M.mod_quiz.init_attempt_form = function(Y) {
+M.mod_quiz.init_attempt_form = function(Y) {	
+	console.log("hello there from init_attempt_form!");
+	console.log("preview="+M.mod_quiz.timer.preview);
     M.core_question_engine.init_form(Y, '#responseform');
     Y.on('submit', M.mod_quiz.timer.stop, '#responseform');
     M.core_formchangechecker.init({formid: 'responseform'});
+	console.log("preview="+M.mod_quiz.timer.preview);
 };
 
 M.mod_quiz.init_review_form = function(Y) {
@@ -64,6 +67,7 @@ M.mod_quiz.timer = {
      * @param preview, is this a quiz preview?
      */
     init: function(Y, start, preview) {
+	console.log("at init preview="+preview);
         M.mod_quiz.timer.Y = Y;
         M.mod_quiz.timer.endtime = new Date().getTime() + start*1000;
         M.mod_quiz.timer.preview = preview;
@@ -93,17 +97,25 @@ M.mod_quiz.timer = {
 
     // Function to update the clock with the current time left, and submit the quiz if necessary.
     update: function() {
+	//bad and dirty, but fixes the bug - we just don't allow preview
+	if(false){
+		M.mod_quiz.timer.preview=false;
+	}
+		console.log("preview="+M.mod_quiz.timer.preview);
         var Y = M.mod_quiz.timer.Y;
         var secondsleft = Math.floor((M.mod_quiz.timer.endtime - new Date().getTime())/1000);
         
         // If this is a preview and time expired, display timeleft 0 and don't renew the timer.
         if (M.mod_quiz.timer.preview && secondsleft < 0) {
-            Y.one('#quiz-time-left').setContent('0:00:00');
+		console.log("hello from preview");
+		console.log("preview="+M.mod_quiz.timer.preview);
+            	Y.one('#quiz-time-left').setContent('0:00:00');
             return;
         }
 
         // If time has expired, Set the hidden form field that says time has expired.
         if (secondsleft < 0) {
+	console.log("hello form secondsleft!");
             M.mod_quiz.timer.stop(null);
             Y.one('#quiz-time-left').setContent(M.str.quiz.timesup);
             var input = Y.one('input[name=timeup]');
