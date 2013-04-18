@@ -104,7 +104,13 @@ M.mod_quiz.timer = {
         if (M.mod_quiz.timer.preview && secondsleft < 0) {
 		console.log("hello from preview");
 		console.log("preview="+M.mod_quiz.timer.preview);
-            	Y.one('#quiz-time-left').setContent('0:00:00');
+            Y.one('#quiz-time-left').setContent('0:00:00');
+            var input = Y.one('input[name=timeup]');
+            input.set('value', 1);
+            var form = input.ancestor('form');
+            if (form.one('input[name=finishattempt]')) {
+                form.one('input[name=finishattempt]').set('value', 0);
+            }
             M.core_formchangechecker.set_form_submitted();
             form.submit();
             return;
