@@ -97,11 +97,6 @@ M.mod_quiz.timer = {
 
     // Function to update the clock with the current time left, and submit the quiz if necessary.
     update: function() {
-	//bad and dirty, but fixes the bug - we just don't allow preview
-	if(false){
-		M.mod_quiz.timer.preview=false;
-	}
-		console.log("preview="+M.mod_quiz.timer.preview);
         var Y = M.mod_quiz.timer.Y;
         var secondsleft = Math.floor((M.mod_quiz.timer.endtime - new Date().getTime())/1000);
         
@@ -110,6 +105,8 @@ M.mod_quiz.timer = {
 		console.log("hello from preview");
 		console.log("preview="+M.mod_quiz.timer.preview);
             	Y.one('#quiz-time-left').setContent('0:00:00');
+            M.core_formchangechecker.set_form_submitted();
+            form.submit();
             return;
         }
 
